@@ -16,25 +16,26 @@
 
 #pragma once
 
+#include <array>
+#include <utility>
 #include <cstdint>
 
 #include "IEventSubscriber.hpp"
 #include "../Utils/Debug.hpp"
-#include "../Memory/INonCopyable.hpp"
 
 #define MAX_COUNT_GLOBAL_ERROR_SUBSCRIBERS 5
 
 namespace EventSystem {
 
     // Singleton
-    class EventManager : public Memory::INonCopyable
+    class EventManager
     {
     public:
         static EventManager& getInstance() noexcept;
         void notifyGlobalError(const char* message) noexcept;
         void subscribeOnGlobalError(const IEventSubscriber& subscriber) noexcept;
     private:
-        const IEventSubscriber* mGlobalErrorSubscribers[MAX_COUNT_GLOBAL_ERROR_SUBSCRIBERS] = { nullptr };
+        std::array<const IEventSubscriber*, MAX_COUNT_GLOBAL_ERROR_SUBSCRIBERS> m_global_error_subscribers{};
     };
 
 }

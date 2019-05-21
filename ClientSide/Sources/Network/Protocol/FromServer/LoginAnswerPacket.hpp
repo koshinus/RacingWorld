@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include "../EPacketType.hpp"
 #include "../NetworkPacket.hpp"
 #include "../../Endianness/BigEndian.hpp"
 
@@ -27,36 +26,35 @@ namespace Network { namespace Protocol {
     class LoginAnswerPacket : NetworkPacket<LoginAnswerPacket>, public IPacketFromServer
     {
     public:
-        explicit LoginAnswerPacket() noexcept = default;
         std::int32_t getPacketNumber() const noexcept;
         std::int32_t getToken() const noexcept;
         bool getResultLogin() const noexcept;
-        char* toBuffer() noexcept;
+        char* serialize() noexcept;
     private:
-        Endianness::int32be_t mToken;
-        bool mResultLogin;
+        Endianness::int32be_t m_token = 0;
+        bool m_result_login = false;
     };
 
     #pragma pack(pop)
 
     inline std::int32_t LoginAnswerPacket::getPacketNumber() const noexcept
     {
-        return mPacketNumber;
+        return m_packet_number;
     }
 
     inline std::int32_t LoginAnswerPacket::getToken() const noexcept
     {
-        return mToken;
+        return m_token;
     }
 
     inline bool LoginAnswerPacket::getResultLogin() const noexcept
     {
-        return mResultLogin;
+        return m_result_login;
     }
     
-    inline char* LoginAnswerPacket::toBuffer() noexcept
+    inline char* LoginAnswerPacket::serialize() noexcept
     {
         return reinterpret_cast<char*>(this);
     }
 
-} }
+}}

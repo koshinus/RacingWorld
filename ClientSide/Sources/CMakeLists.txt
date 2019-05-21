@@ -18,6 +18,10 @@ cmake_minimum_required (VERSION 3.10)
 
 project (RacingWorld)
 
+find_package(Boost 1.60 REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+
 file (GLOB_RECURSE SOURCES "*.cpp" "*.hpp")
 
 foreach (FILE ${SOURCES})

@@ -16,7 +16,7 @@
 
 package ru.servers.gameserver.ecs;
 
-import ru.servers.gameserver.ecs.entities.Car;
+import ru.servers.gameserver.ecs.entities.Vehicle;
 import ru.servers.gameserver.ecs.entities.Entity;
 import ru.servers.gameserver.ecs.entities.EntityType;
 
@@ -30,9 +30,9 @@ public class EntityManagerImpl implements EntityManager {
     @Override
     public int createEntity(EntityType entityType) {
         switch (entityType) {
-            case CAR_ENTITY:
+            case VEHICLE_ENTITY:
                 int entityID = generateEntityID();
-                entities.put(entityID, new Car());
+                entities.put(entityID, new Vehicle());
                 return entityID;
             default:
                 return 0;
@@ -56,8 +56,17 @@ public class EntityManagerImpl implements EntityManager {
     }
 
     private int generateEntityID(){
-        // TODO: need to add better implementation
-        return entities.size() + 1;
+        if (entities.containsKey(entities.size())) {
+            int previousEntityID = -1;
+            for (int currentEntityID : entities.keySet()) {
+                if (currentEntityID - previousEntityID > 1) {
+                    return previousEntityID + 1;
+                } else {
+                    previousEntityID++;
+                }
+            }
+        }
+        return entities.size();
     }
 
 }

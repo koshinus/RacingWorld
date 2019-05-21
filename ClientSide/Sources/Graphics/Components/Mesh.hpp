@@ -26,24 +26,18 @@ namespace Graphics { namespace Components {
     {
     public:
         explicit Mesh() noexcept = default;
-        explicit Mesh(const GLfloat* elements, GLuint countElements) noexcept;
+        explicit Mesh(std::vector<Math::Vector3f>&& vertices, std::vector<Math::Vector2f>&& texture_coordinates,
+            std::vector<Math::Vector3f>&& normals, std::vector<Math::Vector3i>&& face_element_indexes) noexcept;
         GLvoid setMaterial(const Material& material) noexcept;
-        const Material& getMaterial() const noexcept;
-        GLboolean isExistMaterial() const noexcept;
-        GLboolean isInitialized() const noexcept;
+        const std::optional<Material>& getMaterial() const noexcept;
         GLvoid destroy() const noexcept;
         GLvoid draw() const noexcept;
-    public:
-        static const std::uint8_t ALIGNMENT_VERTEX = 0;
-        static const std::uint8_t ALIGNMENT_TEXTURE_COORDINATE = 3;
-        static const std::uint8_t ALIGNMENT_NORMAL = 5;
-        static constexpr std::uint8_t SIZE_ELEMENT = ALIGNMENT_NORMAL + 3;
     private:
-        GLuint mVBO = 0;
-        GLuint mVAO = 0;
-        Material mMaterial{};
-        GLuint mCountElements = 0;
-        const GLfloat* mElements = nullptr;
+        GLuint m_vbO = 0;
+        GLuint m_vao = 0;
+        GLuint m_count_elements = 0;
+        GLfloat* m_elements = nullptr;
+        std::optional<Material> m_material{};
     };
 
 }}
